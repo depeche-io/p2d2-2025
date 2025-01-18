@@ -1,7 +1,7 @@
 services:
   pg-red:
     image: postgres:17-alpine
-    command: "apk add vim && /bin/sleep 7200"
+    command: "bash -c 'apk add vim && /bin/sleep 7200'"
     #environment:
     #  - POSTGRES_USER=${POSTGRES_USER}
     #  - POSTGRES_PASSWORD=${POSTGRES_PW}
@@ -16,18 +16,19 @@ services:
 
   pg-green:
     image: postgres:17-alpine
-    command: "apk add vim && /bin/sleep 7200"
+    command: "bash -c 'apk add vim && /bin/sleep 7200'"
     volumes:
       - "./pg-green/:/var/lib/postgresql/data"
       - "./wal-archive/:/mnt/wal-archive"
       - "./bin/:/root/bin/"
       - "./pg-green-bashrc:/root/.bashrc"
+      - "./pg-red/:/mnt/red-datadir/"
     ports:
       - "7432:5432"
 
   pg-blue:
     image: postgres:17-alpine
-    command: "apk add vim && /bin/sleep 7200"
+    command: "bash -c 'apk add vim && /bin/sleep 7200'"
     #environment:
     #  - POSTGRES_USER=${POSTGRES_USER}
     #  - POSTGRES_PASSWORD=${POSTGRES_PW}
@@ -37,5 +38,6 @@ services:
       - "./wal-archive/:/mnt/wal-archive"
       - "./bin/:/root/bin/"
       - "./pg-blue-bashrc:/root/.bashrc"
+      - "./pg-red/:/mnt/red-datadir/"
     ports:
       - "8432:5432"
