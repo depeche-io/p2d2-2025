@@ -1,13 +1,14 @@
 services:
   pg-red:
     image: postgres:17-alpine
-    command: "bash -c 'apk add vim && /bin/sleep 7200'"
+    entrypoint: "/bin/bash -c 'apk add vim && /bin/sleep 720000'"
     #environment:
     #  - POSTGRES_USER=${POSTGRES_USER}
     #  - POSTGRES_PASSWORD=${POSTGRES_PW}
     #  - POSTGRES_DB=${POSTGRES_DB} #optional (specify default database instead of $POSTGRES_DB)
+    working_dir: /root/bin
     volumes:
-      - "./pg-red/:/var/lib/postgresql/data"
+      - "./pg-red/:/var/lib/postgresql/"
       - "./wal-archive/:/mnt/wal-archive"
       - "./bin/:/root/bin/"
       - "./pg-red-bashrc:/root/.bashrc"
@@ -16,28 +17,30 @@ services:
 
   pg-green:
     image: postgres:17-alpine
-    command: "bash -c 'apk add vim && /bin/sleep 7200'"
+    entrypoint: "/bin/bash -c 'apk add vim && /bin/sleep 720000'"
+    working_dir: /root/bin
     volumes:
-      - "./pg-green/:/var/lib/postgresql/data"
+      - "./pg-green/:/var/lib/postgresql/"
       - "./wal-archive/:/mnt/wal-archive"
       - "./bin/:/root/bin/"
       - "./pg-green-bashrc:/root/.bashrc"
-      - "./pg-red/:/mnt/red-datadir/"
+      #- "./pg-red/:/mnt/red-datadir/"
     ports:
       - "7432:5432"
 
   pg-blue:
     image: postgres:17-alpine
-    command: "bash -c 'apk add vim && /bin/sleep 7200'"
+    entrypoint: "/bin/bash -c 'apk add vim && /bin/sleep 720000'"
+    working_dir: /root/bin
     #environment:
     #  - POSTGRES_USER=${POSTGRES_USER}
     #  - POSTGRES_PASSWORD=${POSTGRES_PW}
     #  - POSTGRES_DB=${POSTGRES_DB} #optional (specify default database instead of $POSTGRES_DB)
     volumes:
-      - "./pg-blue/:/var/lib/postgresql/data"
+      - "./pg-blue/:/var/lib/postgresql/"
       - "./wal-archive/:/mnt/wal-archive"
       - "./bin/:/root/bin/"
       - "./pg-blue-bashrc:/root/.bashrc"
-      - "./pg-red/:/mnt/red-datadir/"
+      #- "./pg-red/:/mnt/red-datadir/"
     ports:
       - "8432:5432"
